@@ -133,7 +133,7 @@ resource "aws_instance" "jenkins-node" {
   instance_type               = "t2.micro"
   vpc_security_group_ids      = ["${aws_security_group.task-sg.id}"]
   subnet_id                   = aws_subnet.terraform_pub_subnet.id
-  key_name                    = " "
+  key_name                    = "task_key"
   count                       = 1
   associate_public_ip_address = true
   tags = {
@@ -145,10 +145,22 @@ resource "aws_instance" "deploy-node" {
   instance_type               = "t2.micro"
   vpc_security_group_ids      = ["${aws_security_group.task-sg.id}"]
   subnet_id                   = aws_subnet.terraform_pvt_subnet.id
-  key_name                    = " "
+  key_name                    = "task_key"
   count                       = 1
   associate_public_ip_address = false
   tags = {
     Name        = "deploy-node"
   }
+}
+resource "aws_key_pair" "task_key" {
+        key_name        =       "task_key"
+        public_key      =       tls_private_key.rsa.public_key_openssh
+}
+resource "tls_private_key" "rsa" {
+        algorithm       =       "RSA"
+        rsa_bits        =       4096
+}
+resource "local_file" "task_key" {
+        content  =      tls_private_key.rsa.private_key_pem
+        filename =      "task_key"
 }
