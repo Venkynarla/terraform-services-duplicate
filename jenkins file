@@ -1,0 +1,23 @@
+pipeline{
+    agent any
+    tools {
+       terraform 'terraform'
+    }
+    stages{
+        stage ('scm checkout'){
+            steps{
+                git 'https://github.com/Venkynarla/terraform-ec2.git'
+            }
+        }
+        stage ('terraform init'){
+            steps{
+                sh 'terraform init'
+            }
+        }
+        stage ('terraform action') {
+            steps {
+                sh ('terraform ${action} --auto-approve')
+            }
+        }
+    }
+}
