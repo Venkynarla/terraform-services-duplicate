@@ -133,7 +133,7 @@ resource "aws_instance" "jenkins-node" {
   instance_type               = "t2.micro"
   vpc_security_group_ids      = ["${aws_security_group.task-sg.id}"]
   subnet_id                   = aws_subnet.terraform_pub_subnet.id
-  key_name                    = "task_key"
+  key_name                    = "learn_linux"
   count                       = 1
   associate_public_ip_address = true
   tags = {
@@ -145,7 +145,7 @@ resource "aws_instance" "deploy-node" {
   instance_type               = "t2.micro"
   vpc_security_group_ids      = ["${aws_security_group.task-sg.id}"]
   subnet_id                   = aws_subnet.terraform_pvt_subnet.id
-  key_name                    = "task_key"
+  key_name                    = "learn_linux"
   count                       = 1
   associate_public_ip_address = false
   tags = {
